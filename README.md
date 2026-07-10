@@ -110,7 +110,7 @@ Beecrowd Profile: https://www.beecrowd.com.br/judge/en/profile/56315
 - [ ] bee 1106 - Dragster
 - [X] bee 1107 - Laser Sculpture
 - [ ] bee 1108 - Towers for Mobile Telephony
-- [ ] bee 1109 - Cheating on the Contest
+- [X] bee 1109 - Cheating on the Contest
 - [X] bee 1110 - Throwing Cards Away
 - [ ] bee 1111 - Desrugenstein
 - [ ] bee 1112 - Schweisen
