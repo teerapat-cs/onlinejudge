@@ -1,3 +1,5 @@
 trying_onlinejudge
 .pytest_cache
 env
+/utility/.chrome_debug_profile
+utility/.beecrowd_cookies.pkl
