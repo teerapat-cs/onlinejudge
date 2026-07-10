@@ -94,7 +94,7 @@ Beecrowd Profile: https://www.beecrowd.com.br/judge/en/profile/56315
 - [ ] bee 1090 - Set
 - [X] bee 1091 - Division of Nlogonia
 - [ ] bee 1092 - Longest Increasing Sub-Sequence
-- [ ] bee 1093 - Vampires
+- [X] bee 1093 - Vampires
 - [X] bee 1094 - Experiments
 - [X] bee 1095 - Sequence IJ 1
 - [X] bee 1096 - Sequence IJ 2
