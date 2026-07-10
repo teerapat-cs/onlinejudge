@@ -2486,3 +2486,7 @@ Beecrowd Profile: https://www.beecrowd.com.br/judge/en/profile/56315
 - [X] beecrowd 3482 3rd SQL Marathon - Followers
 - [X] beecrowd 3483 3rd SQL Marathon - Second Largest and Smallest
 - [X] beecrowd 3484 - Divided Class
+- [X] beecrowd 3486 - Display Register
+- [ ] beecrowd 3487 - Firmware - Substring Manipulation
+- [X] beecrowd 3488 - Binary/Hexadecimal Number Systems
+- [ ] beecrowd 3489 - C++ Templates and STL Containers
