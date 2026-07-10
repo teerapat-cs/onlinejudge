@@ -1,7 +1,7 @@
 # Date: 09-07-2026
 # Author : Teerapat Phokhonwong
 # Online judge: BEECROWD
-# Categories: AD-HOC
+# Categories: MATHEMATICS
 # Problem: 1093 - Vampires
 # Link: https://judge.beecrowd.com/en/problems/view/1093
 # Timelimit: 1 sec
