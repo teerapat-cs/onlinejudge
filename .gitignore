@@ -3,3 +3,9 @@ trying_onlinejudge
 env
 /utility/.chrome_debug_profile
 utility/.beecrowd_cookies.pkl
+
+# app
+target/
+node_modules/
+dist/
+.expo/
