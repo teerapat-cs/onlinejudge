@@ -1,0 +1,11 @@
+# Keep the build context small and reproducible.
+target/
+.git/
+.github/
+.claude/
+*.sqlite
+*.sqlite-*
+config/local.yaml
+config/*.local.yaml
+.env
+.env.*

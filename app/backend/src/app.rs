@@ -14,7 +14,12 @@ use migration::Migrator;
 use std::path::Path;
 
 #[allow(unused_imports)]
-use crate::{controllers, models::_entities::users, tasks, workers::downloader::DownloadWorker};
+use crate::{
+    controllers,
+    models::_entities::{algorithms, notes, users},
+    tasks,
+    workers::downloader::DownloadWorker,
+};
 
 pub struct App;
 #[async_trait]
@@ -47,6 +52,8 @@ impl Hooks for App {
 
     fn routes(_ctx: &AppContext) -> AppRoutes {
         AppRoutes::with_default_routes() // controller routes below
+            .add_route(controllers::algorithms::routes())
+            .add_route(controllers::notes::routes())
             .add_route(controllers::auth::routes())
     }
     async fn connect_workers(ctx: &AppContext, queue: &Queue) -> Result<()> {
@@ -62,11 +69,20 @@ impl Hooks for App {
     }
     async fn truncate(ctx: &AppContext) -> Result<()> {
         truncate_table(&ctx.db, users::Entity).await?;
+        truncate_table(&ctx.db, notes::Entity).await?;
+        truncate_table(&ctx.db, algorithms::Entity).await?;
         Ok(())
     }
     async fn seed(ctx: &AppContext, base: &Path) -> Result<()> {
+        truncate_table(&ctx.db, users::Entity).await?;
+        truncate_table(&ctx.db, algorithms::Entity).await?;
         db::seed::<users::ActiveModel>(&ctx.db, &base.join("users.yaml").display().to_string())
             .await?;
+        db::seed::<algorithms::ActiveModel>(
+            &ctx.db,
+            &base.join("algorithms.yaml").display().to_string(),
+        )
+        .await?;
         Ok(())
     }
 }

@@ -26,6 +26,11 @@ server:
   host: http://localhost
   # Out of the box middleware configuration. to disable middleware you can changed the `enable` field to `false` of comment the middleware block
   middlewares:
+    # Expo web dev server runs on :8081 and calls the API on :5150, so the
+    # browser needs CORS here too.
+    cors:
+      enable: true
+      allow_origins: ['*']
 
 # Worker Configuration
 workers:
@@ -71,7 +76,7 @@ mailer:
 # Database Configuration
 database:
   # Database connection URI
-  uri: <%= get_env(name="DATABASE_URL", default="sqlite://backend_development.sqlite?mode=rwc") %>
+  uri: <%= get_env(name="DATABASE_URL", default="postgres://loco:loco@localhost:5433/ojnotes_development") %>
   # When enabled, the sql query will be logged.
   enable_logging: <%= get_env(name="DB_LOGGING", default="false") %>
   # Set the timeout duration when acquiring a connection.

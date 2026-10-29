@@ -1,0 +1,59 @@
+---
+- id: 1
+  slug: bubble-sort
+  name: Bubble Sort
+  category: sorting
+  description: "เปรียบเทียบสมาชิกที่อยู่ติดกันทีละคู่ แล้วสลับตำแหน่งหากเรียงผิดลำดับ ทำซ้ำหลายรอบจนกระทั่งข้อมูลเรียงลำดับจากน้อยไปมาก"
+  pseudocode: |
+    for i = 0 to n - 2:
+      for j = 0 to n - 2 - i:
+        if arr[j] > arr[j + 1]:
+          swap(arr[j], arr[j + 1])
+  time_complexity: "O(n^2)"
+  space_complexity: "O(1)"
+  sample_input:
+    array: [64, 34, 25, 12, 22, 11, 90]
+  created_at: "2026-01-01T00:00:00.000Z"
+  updated_at: "2026-01-01T00:00:00.000Z"
+- id: 2
+  slug: selection-sort
+  name: Selection Sort
+  category: sorting
+  description: "ค้นหาสมาชิกที่มีค่าน้อยที่สุดในส่วนที่ยังไม่ได้เรียงลำดับ แล้วนำมาสลับกับสมาชิกตัวแรกของส่วนที่ยังไม่ได้เรียงลำดับ ทำซ้ำจนครบทุกตำแหน่ง"
+  pseudocode: |
+    for i = 0 to n - 2:
+      min_idx = i
+      for j = i + 1 to n - 1:
+        if arr[j] < arr[min_idx]:
+          min_idx = j
+      swap(arr[i], arr[min_idx])
+  time_complexity: "O(n^2)"
+  space_complexity: "O(1)"
+  sample_input:
+    array: [29, 10, 14, 37, 13, 25, 18]
+  created_at: "2026-01-01T00:00:00.000Z"
+  updated_at: "2026-01-01T00:00:00.000Z"
+- id: 3
+  slug: binary-search
+  name: Binary Search
+  category: searching
+  description: "ค้นหาค่าเป้าหมายในอาเรย์ที่เรียงลำดับแล้ว โดยเปรียบเทียบกับค่ากึ่งกลาง (mid) เพื่อตัดช่วงการค้นหาออกทีละครึ่งในแต่ละขั้นตอน"
+  pseudocode: |
+    low = 0, high = n - 1
+    while low <= high:
+      mid = floor((low + high) / 2)
+      if arr[mid] == target:
+        return mid
+      else if arr[mid] < target:
+        low = mid + 1
+      else:
+        high = mid - 1
+    return -1
+  time_complexity: "O(log n)"
+  space_complexity: "O(1)"
+  sample_input:
+    array: [3, 8, 12, 17, 23, 31, 42, 56, 68, 79]
+    target: 42
+  created_at: "2026-01-01T00:00:00.000Z"
+  updated_at: "2026-01-01T00:00:00.000Z"
+

@@ -7,8 +7,10 @@
 # secret or a localhost database is worse than one that refuses to boot.
 #
 # The variables this file requires:
-#   DATABASE_URL, JWT_SECRET, HOST, and the MAILER_* / REDIS_URL set below,
-#   depending on which features you generated.
+#   DATABASE_URL, JWT_SECRET, HOST.
+# Everything else has a boot-safe default: DB_* pool tuning, CORS_* for the
+# Expo web origin, and MAILER_* (mail is stubbed until a provider is wired up).
+# On Railway these are service variables — see ../DEPLOY_RAILWAY.md.
 
 # Application logging configuration
 logger:
@@ -39,6 +41,14 @@ server:
   host: <%= get_env(name="HOST") %>
   # Out of the box middleware configuration. to disable middleware you can changed the `enable` field to `false` of comment the middleware block
   middlewares:
+    # The Expo web build is served from another origin than the API (a separate
+    # Railway service and domain), so browser calls need CORS.
+    # `CORS_ALLOW_ORIGINS` takes a YAML flow list, e.g.
+    #   CORS_ALLOW_ORIGINS=['https://oj-notes.up.railway.app']
+    # and defaults to any origin because the MVP API is unauthenticated.
+    cors:
+      enable: <%= get_env(name="CORS_ENABLE", default="true") %>
+      allow_origins: <%= get_env(name="CORS_ALLOW_ORIGINS", default="['*']") %>
 
 # Worker Configuration
 workers:
@@ -52,19 +62,24 @@ workers:
 
 # Mailer Configuration.
 mailer:
+  # The MVP has no transactional mail flow yet, so mail is stubbed: deliveries
+  # are recorded in memory instead of needing an SMTP provider, and a fresh
+  # deploy boots without any MAILER_* variable. Flip MAILER_STUB=false and fill
+  # the SMTP block when real mail is introduced.
+  stub: <%= get_env(name="MAILER_STUB", default="true") %>
   # SMTP mailer configuration.
   smtp:
     # Enable/Disable smtp mailer.
-    enable: true
+    enable: <%= get_env(name="MAILER_ENABLE", default="false") %>
     # SMTP server host. e.x localhost, smtp.gmail.com
-    host: <%= get_env(name="MAILER_HOST") %>
-    # SMTP server port
+    host: <%= get_env(name="MAILER_HOST", default="localhost") %>
+    # SMTP server port. 587 = STARTTLS, 465 = implicit TLS (add MAILER_TLS=implicit).
     port: <%= get_env(name="MAILER_PORT", default="587") %>
     # Use secure connection (SSL/TLS).
-    secure: true
+    secure: <%= get_env(name="MAILER_SECURE", default="true") %>
     auth:
-      user: <%= get_env(name="MAILER_USER") %>
-      password: <%= get_env(name="MAILER_PASSWORD") %>
+      user: <%= get_env(name="MAILER_USER", default="''") %>
+      password: <%= get_env(name="MAILER_PASSWORD", default="''") %>
     # Override the SMTP hello name (default is the machine's hostname)
     # hello_name:
 

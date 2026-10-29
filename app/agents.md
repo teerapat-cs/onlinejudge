@@ -8,13 +8,25 @@
 - **Frontend**: React Native — Expo (SDK ~58), ใช้ Expo Router (ดูกฎเพิ่มใน `frontend/AGENTS.md`)
 - **Database**: PostgreSQL 16 ผ่าน Docker
 
+## Deploy
+
+Stack ทั้งหมดรันเป็น container บน Railway ได้ (frontend + backend + PostgreSQL)
+ดูขั้นตอนที่ [`DEPLOY_RAILWAY.md`](./DEPLOY_RAILWAY.md)
+
+```bash
+cd app
+docker compose up -d                     # PostgreSQL อย่างเดียว (dev)
+docker compose --profile app up --build  # db + API + web (เหมือนบน Railway)
+```
+
 ## โครงสร้าง
 
 ```
 app/
-├── docker-compose.yml   # PostgreSQL — host port 5433 (5432 ถูก container โปรเจกต์อื่นใช้อยู่ ห้ามเปลี่ยนกลับ)
-├── backend/             # Loco.rs app (API port 5150)
-└── frontend/            # Expo app — routes อยู่ใน src/app/ (Expo Router), non-route code อยู่นอก src/app/
+├── docker-compose.yml   # PostgreSQL (+ profile `app` = ทั้ง stack) — host port 5433 (5432 ถูก container โปรเจกต์อื่นใช้อยู่ ห้ามเปลี่ยนกลับ)
+├── DEPLOY_RAILWAY.md     # ขั้นตอน deploy container stack ขึ้น Railway
+├── backend/             # Loco.rs app (API port 5150) — Dockerfile + railway.json
+└── frontend/            # Expo app — routes อยู่ใน src/app/ (Expo Router), non-route code อยู่นอก src/app/ — Dockerfile + railway.json
 ```
 
 ## คำสั่งที่ใช้บ่อย
@@ -59,17 +71,32 @@ npx expo lint                 # lint
 - Step sequence (compare/swap/highlight) คำนวณบน client จาก `sample_input` — backend ไม่ส่ง steps
 - Animation ใช้ `react-native-reanimated`, playback controls (play/pause/step/reset/speed) เป็น shared component
 
-## สถานะงาน (อัปเดต 2026-10-27)
+## กฎการอัปเดตสถานะงาน (บังคับ)
 
-- [x] docker-compose.yml + PostgreSQL รันแล้ว (port 5433)
+ทุกครั้งที่ทำงานเสร็จหรือคืบหน้า ต้องอัปเดต **สองที่** ในรอบเดียวกัน:
+
+1. [`PLAN.md`](./PLAN.md) — ช่องสถานะ + `% ที่ได้` ในตาราง Checklist, **Progress รวม**, ตาราง **Progress by phase**,
+   วันที่ "สถานะอัปเดตล่าสุด", และเพิ่มบรรทัดใน **ประวัติการอัปเดต**
+2. หัวข้อ **สถานะงาน** ท้ายไฟล์นี้ ให้ตรงกับตาราง Checklist (ห้ามให้สองที่นี้ขัดกัน)
+
+ห้ามรายงานว่างาน "เสร็จ" ถ้าไฟล์พวกนี้ยังไม่ถูกอัปเดต
+
+## สถานะงาน (อัปเดต 2026-10-29 · progress 100%)
+
+รายละเอียดน้ำหนักงาน/หลักฐานอยู่ใน [`PLAN.md`](./PLAN.md) — สรุปย่อ:
+
+- [x] docker-compose.yml + PostgreSQL รันแล้ว (port 5433, container `ojnotes-postgres` healthy)
 - [x] Rust stable 1.99.1 + loco CLI v1.2.0
-- [x] Expo frontend scaffold (`frontend/`)
-- [ ] Backend scaffold — **blocked**: `loco new` error `IO NotFound` อยู่ระหว่างแก้
-- [ ] Migrations, models, seed
-- [ ] REST API + tests
-- [ ] Frontend screens (Notes / Learn tabs)
-- [ ] Visualizers + playback controls
-- [ ] Verify end-to-end
+- [x] Expo frontend scaffold (`frontend/` — expo ~58.0.19)
+- [x] `agents.md` + project skills (`loco-backend`, `expo-app`) + `AGENTS.md` ของแต่ละ service
+- [x] เตรียมไฟล์ deploy Railway (Dockerfile + `railway.json` ทั้งสอง service, `DEPLOY_RAILWAY.md`)
+- [x] Backend scaffold (`backend/`, loco-rs 1.2) + ตั้งค่า `config/development.yaml` และ `config/test.yaml` ชี้ Postgres 5433 แล้ว
+- [x] Migrations + models (`notes`, `algorithms`) + seed (`bubble-sort`, `selection-sort`, `binary-search`)
+- [x] REST API `/api/notes` + `/api/algorithms` และ tests (`cargo test` ผ่าน 32/32 tests, `cargo clippy` ผ่าน)
+- [x] Frontend deps (`expo-router`, `react-native-reanimated`, `react-native-worklets`, `react-native-markdown-display` ฯลฯ ผ่าน `npx expo install`)
+- [x] Frontend screens (`Notes` / `Learn` tabs ใน `src/app/`)
+- [x] Visualizers (`SortingVisualizer`, `BinarySearchVisualizer`) + shared `PlaybackControls`
+- [x] Verify end-to-end (live API requests + `cargo test` + `npx tsc --noEmit` + `npx expo lint` + `npx expo export --platform web`)
 
 ## ข้อควรระวัง
 

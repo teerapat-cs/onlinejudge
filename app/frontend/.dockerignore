@@ -1,0 +1,15 @@
+# Keep the build context small; dependencies are installed from the lockfile.
+node_modules/
+dist/
+web-build/
+.expo/
+.git/
+.github/
+.env
+.env.*
+!.env.example
+npm-debug.*
+yarn-error.*
+*.tsbuildinfo
+ios/
+android/

@@ -1,4 +1,7 @@
 services:
+  # `docker compose up -d` (no profile) starts PostgreSQL only — the everyday
+  # dev setup. `docker compose --profile app up --build` starts the whole
+  # container stack (db + API + web), mirroring the Railway deployment.
   postgres:
     image: postgres:16-alpine
     container_name: ojnotes-postgres
@@ -16,6 +19,37 @@ services:
       interval: 5s
       timeout: 3s
       retries: 10
+
+  backend:
+    profiles: ["app"]
+    build:
+      context: ./backend
+    environment:
+      # The local stack uses config/development.yaml; config/production.yaml
+      # requires Railway-only secrets (HOST, JWT_SECRET, ...).
+      LOCO_ENV: development
+      DATABASE_URL: postgres://loco:loco@postgres:5432/ojnotes_development
+      BINDING: 0.0.0.0
+      PORT: "5150"
+    ports:
+      - "5150:5150"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  frontend:
+    profiles: ["app"]
+    build:
+      context: ./frontend
+      args:
+        # EXPO_PUBLIC_* is baked into the web bundle at build time.
+        EXPO_PUBLIC_API_URL: http://localhost:5150
+    environment:
+      PORT: "8080"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - backend
 
 volumes:
   pgdata:

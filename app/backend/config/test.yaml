@@ -60,7 +60,7 @@ mailer:
 # Database Configuration
 database:
   # Database connection URI
-  uri: <%= get_env(name="DATABASE_URL", default="sqlite://backend_test.sqlite?mode=rwc") %>
+  uri: <%= get_env(name="DATABASE_URL", default="postgres://loco:loco@localhost:5433/ojnotes_development") %>
   # When enabled, the sql query will be logged.
   enable_logging: false
   # Set the timeout duration when acquiring a connection.
